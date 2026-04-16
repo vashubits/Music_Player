@@ -12,8 +12,11 @@ const musicRouter = require('./routes/upload.route')
 const upload = multer({storage:multer.memoryStorage()})
 app.use(cors({
   origin: "https://music-player-git-main-vashu-guptas-projects.vercel.app",
-  credentials:true
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
 app.use(express.json())
 app.use(cookieParser())
 
