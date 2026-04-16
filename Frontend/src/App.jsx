@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import Navbar from "./page/navbar"
+import Navbar from "./page/Navbar"
 import Register from "./page/Register"
 import Login from "./page/Login"
 import Upload from "./page/uploadMusic"
 import CreateAlbum from "./page/createAlbum"
-import Home from "./page/home"
+import Home from "./page/Home"
 import ProtectedRoute from "./Routes/protection.route"
 import ArtistSong from "./page/artistSong"
 
