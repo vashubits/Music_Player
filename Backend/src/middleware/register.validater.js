@@ -16,7 +16,7 @@ const registerValidator = [
 
   body('role')
     .optional()
-    .isIn(['user', 'Artist']).withMessage('Role must be user or artist')
+    .isIn(['user', 'artist']).withMessage('Role must be user or artist')
 ]
 
 
