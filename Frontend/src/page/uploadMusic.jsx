@@ -8,6 +8,7 @@ const Upload = () => {
 
   const [musicName, setMusicName] = useState('')
   const [file, setFile] = useState(null)
+  const [imageFile, setimageFile] = useState(null)
   const [loading, setloading] = useState(false)
 
   const [popup, setPopup] = useState({
@@ -18,7 +19,7 @@ const Upload = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-if (loading) return 
+    if (loading) return
     if (!file || !musicName) {
       setPopup({
         show: true,
@@ -30,7 +31,8 @@ if (loading) return
 
     const formData = new FormData()
     formData.append("musicName", musicName)
-    formData.append("file", file)
+    formData.append("musicFile", file)
+    formData.append("imageFile", imageFile)
 
     setloading(true)
     try {
@@ -54,7 +56,7 @@ if (loading) return
       setTimeout(() => navigate('/'), 2000)
 
     } catch (err) {
-      
+
       setPopup({
         show: true,
         message: err.response?.data?.message || "Upload failed",
@@ -86,14 +88,23 @@ if (loading) return
 
           <input
             type="file"
+            accept="image/*"
+            placeholder='no choose file'
+            onChange={(e) => setimageFile(e.target.files[0])}
+            style={styles.file}
+            required
+          />
+          <input
+            type="file"
             accept="audio/*"
+            placeholder='no choose file'
             onChange={(e) => setFile(e.target.files[0])}
             style={styles.file}
             required
           />
-       <button  style={styles.button}>
+          <button style={styles.button}>
             Upload 🚀
-          </button>   
+          </button>
 
         </form>
       </div>
@@ -145,17 +156,17 @@ const styles = {
     padding: '12px',
     borderRadius: '8px',
     border: "1px solid #ccc"
-    
+
   },
 
-file: {
-  padding: '10px',
-  borderRadius: '8px',
-  background: '#fff',
-  color: '#2a2a2a',
-  border: '1px solid #444',
-  cursor: 'pointer'
-},
+  file: {
+    padding: '10px',
+    borderRadius: '8px',
+    background: '#fff',
+    color: '#2a2a2a',
+    border: '1px solid #444',
+    cursor: 'pointer'
+  },
 
   button: {
     padding: '12px',

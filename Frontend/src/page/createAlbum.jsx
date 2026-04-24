@@ -30,7 +30,7 @@ if(loading)return
 
     const formData = new FormData()
     formData.append("albumName", albumName)
-    formData.append("file", file)
+    formData.append("imageFile", file)
     setloading(true)
 
     try {
