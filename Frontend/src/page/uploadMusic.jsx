@@ -20,7 +20,6 @@ const Upload = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (loading) return
-
     if (!musicFile || !musicName || !imageFile) {
       setPopup({
         show: true,
@@ -29,7 +28,6 @@ const Upload = () => {
       })
       return
     }
-
     if (musicFile.size > 7 * 1024 * 1024) {
       setPopup({
         show: true,
@@ -45,12 +43,16 @@ const Upload = () => {
     formData.append("imageFile", imageFile)
 
     setloading(true)
-
     try {
       const res = await axios.post(
         "https://music-player-ew1o.onrender.com/api/music/uploadmusic",
         formData,
-        { withCredentials: true }
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        }
       )
 
       setPopup({
@@ -62,6 +64,7 @@ const Upload = () => {
       setTimeout(() => navigate('/'), 2000)
 
     } catch (err) {
+
       setPopup({
         show: true,
         message: err.response?.data?.message || "Upload failed",
@@ -77,78 +80,124 @@ const Upload = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-[#0f0f0f] to-[#1a1a1a] text-white px-4">
+    <div style={styles.wrapper}>
 
-      <div className="w-full max-w-md bg-[#181818] border border-gray-800 rounded-2xl shadow-2xl p-8">
+      <div style={styles.card}>
+        <h2 style={styles.title}>🎵 Upload Music</h2>
 
-        <h2 className="text-2xl font-bold text-green-500 mb-6 text-center">
-          🎵 Upload Music
-        </h2>
+        <form onSubmit={handleSubmit} style={styles.form}>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-
-          
           <input
             type="text"
             placeholder="Enter Music Name"
             value={musicName}
             onChange={(e) => setMusicName(e.target.value)}
-            className="w-full p-3 rounded-lg bg-[#2a2a2a] border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+            style={styles.input}
+            required
           />
 
-          
-          <label className="block w-full p-3 rounded-lg bg-[#2a2a2a] border border-gray-700 cursor-pointer hover:bg-[#333] transition">
-            <span className="text-gray-400">
-              {imageFile ? imageFile.name : "Choose Cover Image"}
-            </span>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setimageFile(e.target.files[0])}
-              className="hidden"
-            />
-          </label>
-
-         
-          <label className="block w-full p-3 rounded-lg bg-[#2a2a2a] border border-gray-700 cursor-pointer hover:bg-[#333] transition">
-            <span className="text-gray-400">
-              {musicFile ? musicFile.name : "Choose Music File"}
-            </span>
-            <input
-              type="file"
-              accept="audio/*"
-              onChange={(e) => setmusicFile(e.target.files[0])}
-              className="hidden"
-            />
-          </label>
-
-         
-          <button
-            disabled={loading}
-            className={`w-full p-3 rounded-lg font-bold transition ${
-              loading
-                ? 'bg-gray-600 cursor-not-allowed'
-                : 'bg-green-500 hover:bg-green-600 text-black'
-            }`}
-          >
+          <input
+            type="file"
+            accept="image/*"
+            placeholder='choose image'
+            onChange={(e) => setimageFile(e.target.files[0])}
+            style={styles.file}
+            required
+          />
+          <input
+            type="file"
+            accept="audio/*"
+            placeholder='choose music'
+            onChange={(e) => setmusicFile(e.target.files[0])}
+            style={styles.file}
+            required
+          />
+          <button style={styles.button} disabled={loading}>
             {loading ? "Uploading..." : "Upload 🚀"}
           </button>
 
         </form>
       </div>
 
-      {/* Popup */}
       {popup.show && (
-        <div
-          className={`fixed top-20 right-5 px-5 py-3 rounded-lg font-semibold shadow-lg
-          ${popup.type === 'success' ? 'bg-green-500' : 'bg-red-500'}`}
-        >
+        <div style={{
+          ...styles.popup,
+          background: popup.type === 'success' ? '#1DB954' : '#ff4d4d'
+        }}>
           {popup.message}
         </div>
       )}
 
     </div>
   )
+}
+
+const styles = {
+  wrapper: {
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background: 'linear-gradient(135deg, #0f0f0f, #1a1a1a)',
+    color: '#fff'
+  },
+
+  card: {
+    background: '#1e1e1e',
+    padding: '30px',
+    borderRadius: '12px',
+    width: '350px',
+    boxShadow: '0 0 20px rgba(0,0,0,0.5)',
+    textAlign: 'center'
+  },
+
+  title: {
+    marginBottom: '20px',
+    color: '#1DB954'
+  },
+
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '15px'
+  },
+
+  input: {
+    padding: '12px',
+    borderRadius: '8px',
+    border: "1px solid #ccc"
+
+  },
+
+  file: {
+    padding: '10px',
+    borderRadius: '8px',
+    background: '#fff',
+    color: '#2a2a2a',
+    border: '1px solid #444',
+    cursor: 'pointer'
+  },
+
+  button: {
+    padding: '12px',
+    background: '#1DB954',
+    border: 'none',
+    borderRadius: '8px',
+    color: '#000',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    transition: '0.3s'
+  },
+
+  popup: {
+    position: 'fixed',
+    top: '100px',
+    left: '20px',
+    color: '#fff',
+    padding: '12px 20px',
+    borderRadius: '8px',
+    fontWeight: 'bold'
+  }
 }
 
 export default Upload
