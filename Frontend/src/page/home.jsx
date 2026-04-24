@@ -71,7 +71,7 @@ const Home = () => {
               onPlay={(e) => handlePlay(e.target)}
               onPause={(e) => handlePause(e.target)}
             >
-              <source src={item.uri} type="audio/mp3" />
+              <source src={item.musicUri} type="audio/mp3" />
             </audio>
 
           </div>
@@ -92,7 +92,7 @@ const Home = () => {
 
             <div className="albumImageWrapper">
               <img
-                src={item.uri}
+                src={item.imageUri}
                 alt="album"
                 className="albumImage"
               />
