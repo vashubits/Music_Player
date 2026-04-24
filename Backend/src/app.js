@@ -13,7 +13,10 @@ const upload = multer({storage:multer.memoryStorage()})
 app.use(express.static("public"))
 
 app.use(cors({
-  origin: "https://music-player-git-main-vashu-guptas-projects.vercel.app",
+  origin:  [
+  "http://localhost:5173",
+  "https://music-player-git-main-vashu-guptas-projects.vercel.app"
+],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
@@ -29,6 +32,6 @@ app.get("/", (req, res) => {
 
 app.use('/api/auth', authRouter)
 app.use('/api',homeRouter)
-app.use('/api/music',authMiddleware,upload.fields([{name:'musicFile'},{name:'imageFile'}]), musicRouter)
+app.use('/api/music',authMiddleware, musicRouter)
 
 module.exports = app

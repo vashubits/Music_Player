@@ -11,8 +11,8 @@ async function uploadMusic(req, res) {
     })
 
     const user = req.user
-    const musicFile = req.musicFile
-    const imageFile = req.imageFile
+    const musicFile = req.files?.musicFile?.[0]
+    const imageFile = req.files?.imageFile?.[0]
 
     if (req.user.role !== 'artist') {
       return res.status(403).json({ message: "Only artist can upload music" })
@@ -55,9 +55,9 @@ async function uploadMusic(req, res) {
 
 
 async function createAlbum(req, res) {
-  const albumName  = req.body.albumName
-  const imageFile = req.imageFile
- 
+  const albumName = req.body.albumName
+  const imageFile = req.file
+
 
   const imagekit = new ImageKit({
     privateKey: process.env.IMAGEKIT_PRIVATE_KEY
@@ -67,7 +67,7 @@ async function createAlbum(req, res) {
     return res.status(403).json({ message: "Only artist can create album" })
   }
 
-  
+
 
   if (!imageFile) {
     return res.status(400).json({ message: "No file uploaded" })
