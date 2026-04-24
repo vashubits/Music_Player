@@ -28,14 +28,7 @@ const Upload = () => {
       })
       return
     }
-    if (musicFile.size > 7 * 1024 * 1024) {
-      setPopup({
-        show: true,
-        message: "Music file too large (max 7 MB)",
-        type: "error"
-      })
-      return
-    }
+   
 
     const formData = new FormData()
     formData.append("musicName", musicName)
