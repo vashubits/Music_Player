@@ -51,7 +51,7 @@ const Home = () => {
 
         {music.map((item) => (
           <div
-            className="musicCard albumCard"
+            className=" albumCard"
             key={item._id}
             onClick={()=>handleMusic(item)}
           >
@@ -80,7 +80,7 @@ const Home = () => {
 
         {albums.map((item) => (
           <div
-            className="musicCard albumCard"
+            className=" albumCard"
             key={item._id}
             onClick={() => navigate(`/artist/${item.userId}`)}
           >

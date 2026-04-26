@@ -33,30 +33,30 @@
 }
 .musicGrid {
   display: flex;
-  flex-wrap: nowrap;
   gap: 20px;
-  overflow-x: auto;
-  scroll-behavior: smooth;
+  margin: auto;
   padding-bottom: 10px;
-
+flex-wrap: nowrap !important;
+overflow-x: scroll !important;
   -webkit-overflow-scrolling: touch; 
 }
 
 .musicGrid::-webkit-scrollbar {
   display: none;
 }
-
-.musicCard {
-  flex: 0 0 auto;          
-  width: 250px;         
-
+.albumCard {
+  cursor: pointer;
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 18px;
   padding: 15px;
   backdrop-filter: blur(12px);
+  border-radius: 18px;
   transition: all 0.25s ease;
+  flex: 0 0 auto;  
+  width: 150px;      
 }
+
+
 
 .seekbar {
   position: fixed;
@@ -75,11 +75,7 @@
 
 
 
-.musicCard:hover {
-  transform: translateY(-6px);
-  border: 1px solid rgba(77, 255, 240, 0.4);
-  box-shadow: 0 12px 30px rgba(255,77,77,0.15);
-}
+
 
 .musicIcon {
   font-size: 32px;
@@ -117,9 +113,7 @@ button:hover {
   opacity: 0.9;
 }
 
-.albumCard {
-  cursor: pointer;
-}
+
 
 .albumCard:hover {
   transform: translateY(-6px);
@@ -137,7 +131,7 @@ button:hover {
 .albumImage {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
    border-radius: 12px;    
 }
 
@@ -150,7 +144,5 @@ button:hover {
     font-size: 24px;
   }
 
-  .musicCard {
-    padding: 12px;
-  }
+ 
 }
