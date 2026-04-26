@@ -30,7 +30,7 @@ const ArtistSong = () => {
     
   return (
     <div className='artistSong'>
-      <h2 className="sectionTitle">🔥 Artist Music</h2>
+      <h2 className="sectionTitle"> Artist Music</h2>
 
       <div className="musicGrid">
 

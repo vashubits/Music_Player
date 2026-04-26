@@ -1,12 +1,10 @@
+import React, { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import { useState } from 'react'
 
 const Register = () => {
 
   const navigate = useNavigate()
-
-  const [loading, setLoading] = useState(false)
 
   const [popup, setPopup] = useState({
     show: false,
@@ -17,32 +15,27 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if (loading) return
-
-    setLoading(true) 
-
     const formdata = new FormData(e.target)
 
     const data = {
-      username: formdata.get('username'),
       email: formdata.get('email'),
       password: formdata.get('password'),
+      username: formdata.get('username'),
       role: formdata.get('role')
     }
 
     try {
       const res = await axios.post(
         'https://music-player-ew1o.onrender.com/api/auth/register',
-        data
+        data,
+        { withCredentials: true }
       )
-
+       console.log(res.data)
       setPopup({
         show: true,
-        message: res.data.message,
+        message: res.data.message  ,
         type: 'success'
       })
-
-      e.target.reset()
 
       setTimeout(() => {
         navigate('/')
@@ -51,11 +44,10 @@ const Register = () => {
     } catch (err) {
       setPopup({
         show: true,
-        message: err.response?.data?.message || "Something went wrong",
+         message: err.response?.data?.errors|| "Details are already exist",
+
         type: 'error'
       })
-    } finally {
-      setLoading(false) 
     }
 
     setTimeout(() => {
@@ -65,29 +57,39 @@ const Register = () => {
 
   return (
     <div style={styles.container}>
-
-      <form style={styles.form} onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={styles.form}>
         <h2 style={styles.heading}>Register</h2>
 
-        <input name="username" placeholder="Username" style={styles.input} required />
-        <input name="email" type="email" placeholder="Email" style={styles.input} required />
-        <input name="password" type="password" placeholder="Password" style={styles.input} required />
+        <input
+          type="text"
+          name="username"
+          placeholder="User Name"
+          style={styles.input}
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          style={styles.input}
+          required
+        />
 
-        <select name="role" style={styles.input}>
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          style={styles.input}
+          required
+        />
+        <label htmlFor="role">Choose Role:</label>
+        <select id="role" style={styles.input} name="role">
           <option value="user">User</option>
           <option value="artist">Artist</option>
         </select>
 
-        <button
-          type="submit"
-          disabled={loading}
-          style={{
-            ...styles.button,
-            opacity: loading ? 0.6 : 1,
-            cursor: loading ? "not-allowed" : "pointer"
-          }}
-        >
-          {loading ? "Registering..." : "Submit"}
+        <button type="submit" style={styles.button}>
+          Register
         </button>
       </form>
 
@@ -95,13 +97,12 @@ const Register = () => {
         <div
           style={{
             ...styles.popup,
-            background: popup.type === 'success' ? 'green' : 'red'
+            background: popup.type === 'success' ? '#28a745' : '#dc3545'
           }}
         >
           {popup.message}
         </div>
       )}
-
     </div>
   )
 }
@@ -112,10 +113,9 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    background: 'linear-gradient(135deg, #0f0f0f, #1a1a1a)',
-    color: '#fff'
+    background: "linear-gradient(135deg, #0f0f0f, #1a1a1a)",
+    color: "#fff"
   },
-
   form: {
     width: "300px",
     background: "#1e1e1e",
@@ -124,38 +124,36 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     gap: "12px",
-    boxShadow: "0 0 20px rgba(0,0,0,0.5)"
+    boxShadow: "0 0 20px rgba(0,0,0,0.6)"
   },
-
   heading: {
-    textAlign: "center"
+    textAlign: "center",
+    marginBottom: "10px"
   },
-
   input: {
     padding: "10px",
     borderRadius: "5px",
-    border: "1px solid #ccc",
-    outline: "none"
-  },
+    border: "1px solid #444",
+    background: "#ffffff",
+    color: "#2a2a2a",
 
+  },
   button: {
     padding: "10px",
     border: "none",
     fontWeight: "bold",
     background: "#007bff",
     color: "#fff",
-    borderRadius: "5px",
-    transition: "0.3s"
+    cursor: "pointer",
+    borderRadius: "5px"
   },
-
   popup: {
     position: "fixed",
     top: "100px",
     left: "20px",
     color: "#fff",
     padding: "10px 20px",
-    borderRadius: "5px",
-    fontWeight: "bold"
+    borderRadius: "5px"
   }
 }
 

@@ -7,7 +7,7 @@ const Home = () => {
 
   const [music, setMusic] = useState([])
   const [albums, setAlbums] = useState([])
-  const [currentAudio, setCurrentAudio] = useState(null) 
+  const [currentSong , setCurrentSong] = useState(null)
 
   const navigate = useNavigate()
 
@@ -30,56 +30,51 @@ const Home = () => {
 
   }, [])
 
-  const handlePlay = (audio) => {
-    if (currentAudio && currentAudio !== audio) {
-      currentAudio.pause()
-    }
-    setCurrentAudio(audio)
+  const handleMusic = (item)=>{
+  setCurrentSong(item.musicUri)
+  
   }
 
-  const handlePause = (audio) => {
-    if (currentAudio === audio) {
-      setCurrentAudio(null)
-    }
-  }
+
+  
 
   return (
     <div className="home">
 
       <div className="hero">
-        <h1>🎵 Welcome to MusicApp</h1>
+        <h1>🎵 Welcome to TuneX</h1>
         <p>Listen, Upload and Create your favorite music albums easily.</p>
       </div>
 
-      <h2 className="sectionTitle">🔥 Trending Music</h2>
-
-      <div className="musicGrid">
+      <h2 className="sectionTitle">Trending Music</h2>
+<div className="musicGrid">
 
         {music.map((item) => (
-          <div className="musicCard" key={item._id}>
+          <div
+            className="musicCard albumCard"
+            key={item._id}
+            onClick={()=>handleMusic(item)}
+          >
 
-            <div className="musicIcon">🎶</div>
+            <div className="albumImageWrapper">
+              <img
+                src={item.imageUri}
+                alt="album"
+                className="albumImage"
+              />
+            </div>
 
             <div className="musicInfo">
               <h3>{item.musicName}</h3>
-              <p>Enjoy your music</p>
+              <p>Tap to view artist music</p>
             </div>
-
-            <audio
-              controls
-              className="audio"
-              onPlay={(e) => handlePlay(e.target)}
-              onPause={(e) => handlePause(e.target)}
-            >
-              <source src={item.musicUri} type="audio/mp3" />
-            </audio>
 
           </div>
         ))}
 
       </div>
 
-      <h2 className="sectionTitle">📀 Artist</h2>
+      <h2 className="sectionTitle">Artist</h2>
 
       <div className="musicGrid">
 
@@ -107,6 +102,11 @@ const Home = () => {
         ))}
 
       </div>
+      {currentSong && (
+  <div className="seekbar">
+    <audio src={currentSong} controls autoPlay />
+  </div>
+)} 
 
     </div>
   )
